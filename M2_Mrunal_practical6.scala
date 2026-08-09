@@ -9,7 +9,7 @@ object M2_Mrunal_practical6 {
 
   def main(args: Array[String]): Unit = {
 
-    // Read CSV file
+    
     val data = Source.fromFile("src/main/scala/Social_Network_Ads.csv")
       .getLines()
       .drop(1)
@@ -18,18 +18,18 @@ object M2_Mrunal_practical6 {
 
     val n = data.length
 
-    // Age and Salary
+   
     val X = DenseMatrix(data.map(r =>
       Array(r(0), r(1) / 1000.0)): _*)
 
     val y = DenseVector(data.map(r => r(2)): _*)
 
-    // Add intercept
+    
     val X1 = DenseMatrix.horzcat(
       DenseMatrix.ones[Double](n, 1), X
     )
 
-    // Logistic regression loss and gradient
+    
     val f = new DiffFunction[DenseVector[Double]] {
 
       def calculate(w: DenseVector[Double]) = {
@@ -51,7 +51,7 @@ object M2_Mrunal_practical6 {
       }
     }
 
-    // Train model
+ 
     val optimizer = new LBFGS[DenseVector[Double]](
       maxIter = 100,
       m = 5
@@ -65,7 +65,7 @@ object M2_Mrunal_practical6 {
     println("Age: " + weights(1))
     println("Salary: " + weights(2))
 
-    // Accuracy
+    
     var correct = 0
 
     for (i <- 0 until n) {
@@ -82,7 +82,7 @@ object M2_Mrunal_practical6 {
 
     println(f"Accuracy: ${correct * 100.0 / n}%.2f%%")
 
-    // Prediction
+    
     val age = 30.0
     val salary = 50000.0
 
@@ -101,8 +101,7 @@ object M2_Mrunal_practical6 {
     else
       println("Purchased: No")
 
-    // Graph
-    // Graph
+    
     val frame = new JFrame("Logistic Regression Graph")
     frame.setSize(1000, 700)
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
@@ -119,22 +118,22 @@ object M2_Mrunal_practical6 {
         val width = 800
         val height = 450
 
-        // Title
+        
         g2.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30))
         g2.drawString("Logistic Regression Graph", 330, 60)
 
-        // Axes
+        
         g2.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 16))
         g2.drawLine(left, bottom, left + width, bottom)
         g2.drawLine(left, bottom, left, bottom - height)
 
-        // X-axis label
+       
         g2.drawString("Age", 480, 650)
 
-        // Y-axis label
+       
         g2.drawString("Estimated Salary", 10, 350)
 
-        // X-axis numbers: Age
+      
         for (age <- 0 to 100 by 10) {
           val x = left + (age * 8)
 
@@ -142,7 +141,7 @@ object M2_Mrunal_practical6 {
           g2.drawString(age.toString, x - 5, bottom + 25)
         }
 
-        // Y-axis numbers: Salary
+       
         for (salary <- 0 to 150000 by 25000) {
 
           val y =
@@ -157,7 +156,7 @@ object M2_Mrunal_practical6 {
           )
         }
 
-        // Plot data points
+       
         for (r <- data) {
 
           val age = r(0)
@@ -171,21 +170,21 @@ object M2_Mrunal_practical6 {
               (salary / 150000.0 * height).toInt
 
           if (r(2) == 0) {
-            // Class 0
+            
             g2.fillOval(x - 5, y - 5, 10, 10)
           } else {
-            // Class 1
+          
             g2.drawOval(x - 5, y - 5, 10, 10)
           }
         }
 
-        // Decision boundary
+       
         if (weights(2) != 0) {
 
           val age1 = 0.0
           val age2 = 100.0
 
-          // Salary is calculated in thousands
+         
           val salary1 =
             -(weights(0) + weights(1) * age1) /
               weights(2)
@@ -194,7 +193,7 @@ object M2_Mrunal_practical6 {
             -(weights(0) + weights(1) * age2) /
               weights(2)
 
-          // Convert thousands to actual salary
+         
           val actualSalary1 = salary1 * 1000
           val actualSalary2 = salary2 * 1000
 
@@ -217,7 +216,7 @@ object M2_Mrunal_practical6 {
           g2.setColor(java.awt.Color.BLACK)
         }
 
-        // Legend
+        
         g2.setFont(
           new java.awt.Font(
             "Arial",
